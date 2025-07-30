@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Offerlens AI | Instant Home Deal Analysis</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&display=swap');
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Playfair Display', serif;
+      margin: 0;
+      padding: 0;
+      background: #0d0d0d;
+      color: #fff;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      background: url('Offerlens_AI_Logo_Sharpened_Transparent.png') no-repeat center top;
+      background-size: 140%;
+      opacity: 0.06;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 0;
+    }
+
+    header, section, footer { position: relative; z-index: 1; }
+
+    header { text-align: center; padding: 40px 20px 30px; }
+
+    .brand-name {
+      font-size: 2em;
+      color: #d4af37;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .brand-name svg {
+      width: 44px;
+      height: 44px;
+      stroke: #d4af37;
+      fill: none;
+      stroke-width: 4;
+      filter: drop-shadow(0px 0px 8px #d4af37);
+      animation: glow 2s infinite ease-in-out;
+      transform: rotate(-15deg);
+    }
+
+    @keyframes glow {
+      0% { filter: drop-shadow(0 0 6px #d4af37); }
+      50% { filter: drop-shadow(0 0 14px #ffd700); }
+      100% { filter: drop-shadow(0 0 6px #d4af37); }
+    }
+
+    .main-title {
+      font-size: 4.5em;
+      color: #d4af37;
+      text-shadow: 3px 3px 16px #000;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 40px;
+    }
+
+    .subtitle { font-size: 1.6em; margin-bottom: 35px; color: #f0f0f0; font-style: italic; }
+
+    .divider {
+      width: 200px;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #d4af37, transparent);
+      margin: 20px auto 40px auto;
+      border-radius: 3px;
+    }
+
+    .cta-btn {
+      background: linear-gradient(45deg, #d4af37, #ffd700);
+      color: #000;
+      padding: 20px 44px;
+      margin: 14px;
+      border-radius: 16px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      font-size: 1.4em;
+      font-family: 'Playfair Display', serif;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .cta-btn::before {
+      content: "";
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: rgba(255, 255, 255, 0.5);
+      transform: skewX(-20deg);
+      transition: left 0.7s;
+    }
+
+    .cta-btn:hover::before { left: 200%; }
+
+    .cta-btn:hover { transform: scale(1.12); box-shadow: 0px 12px 28px rgba(212,175,55,0.95); }
+
+    section { padding: 50px 20px; max-width: 1100px; margin: auto; }
+
+    h2 {
+      color: #d4af37;
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 2.9em;
+      text-shadow: 1px 1px 12px #000;
+      letter-spacing: 1.2px;
+    }
+
+    .grid { display: flex; flex-direction: column; gap: 28px; }
+
+    .card {
+      background: rgba(28,28,28,0.96);
+      padding: 35px;
+      border-radius: 18px;
+      box-shadow: 0px 8px 22px rgba(0,0,0,0.85);
+      text-align: center;
+      font-size: 1.2em;
+      line-height: 1.6em;
+    }
+
+    .card strong { color: #d4af37; font-size: 1.6em; display:block; margin-bottom: 12px; }
+
+    .pricing-table { display: flex; flex-direction: column; gap: 40px; margin-top: 50px; }
+
+    .pricing-card {
+      background: rgba(28,28,28,0.96);
+      padding: 45px;
+      border-radius: 20px;
+      border: 2px solid #d4af37;
+      text-align: center;
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      font-size: 1.2em;
+      line-height: 1.6em;
+    }
+
+    .pricing-card:hover { transform: scale(1.06); box-shadow: 0px 14px 32px rgba(212,175,55,0.9); }
+
+    .pricing-card h3 { color: #d4af37; margin-bottom: 22px; font-size: 2.1em; }
+
+    footer { background: rgba(17,17,17,0.98); text-align: center; padding: 40px 20px; margin-top: 60px; color: #ccc; font-family: 'Playfair Display', serif; }
+
+    footer a { color: #d4af37; margin: 0 12px; text-decoration: none; font-weight: bold; }
+  </style>
+<style>
+.form-container {
+  max-width: 900px;
+  margin: 60px auto;
+  background: rgba(28, 28, 28, 0.92);
+  padding: 40px;
+  border-radius: 22px;
+  box-shadow: 0px 0px 30px rgba(212, 175, 55, 0.9);
+  border: 2px solid #d4af37;
+  text-align: center;
+}
+.form-container h2 {
+  color: #d4af37;
+  margin-bottom: 20px;
+}
+.form-container iframe {
+  border: none;
+  width: 100%;
+  height: 800px;
+  border-radius: 15px;
+  box-shadow: inset 0px 0px 15px rgba(212,175,55,0.4);
+}
+</style></head>
+<body>
+<header>
+<div class="brand-name">Offerlens AI
+      <svg viewbox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+<circle cx="27" cy="27" r="12" stroke="#d4af37"></circle>
+<line stroke="#d4af37" x1="38" x2="54" y1="38" y2="54"></line>
+</svg>
+</div>
+<h1 class="main-title">Instant Home Deal Analysis</h1>
+<div class="divider"></div>
+<p class="subtitle">For Investors &amp; Homebuyers — Know the true value of any property in seconds with AI‑powered insights tailored to your goals. Now also available in our mobile app.</p>
+<a class="cta-btn" href="#investors">For Investors</a>
+<a class="cta-btn" href="#buyers">For Homebuyers</a>
+</header>
+<section id="investors">
+<h2>For Investors</h2>
+<div class="divider"></div>
+<div class="grid">
+<div class="card"><strong>Maximize ROI</strong>Advanced return forecasts with real‑time market data.</div>
+<div class="card"><strong>Rental Profitability</strong>Comprehensive rent analysis and yield projections.</div>
+<div class="card"><strong>Exit Strategies</strong>Risk assessments with tailored recommendations.</div>
+</div>
+</section>
+<section id="buyers">
+<h2>For Homebuyers</h2>
+<div class="divider"></div>
+<div class="grid">
+<div class="card"><strong>True Market Value</strong>AI‑powered valuations matched to comparable sales.</div>
+<div class="card"><strong>Neighborhood Insights</strong>Key details on schools, safety, and lifestyle.</div>
+<div class="card"><strong>Affordability Planning</strong>Mortgage calculators and hidden cost detection.</div>
+</div>
+</section>
+<section id="pricing">
+<h2>Plans &amp; Pricing</h2>
+<div class="divider"></div>
+<div class="pricing-table">
+<div class="pricing-card">
+<h3>Investor Advantage Plan</h3>
+<p>Full ROI reports, rental forecasts, deal alerts, and portfolio tools.</p>
+<a class="cta-btn" href="#">Choose Investor Plan</a>
+</div>
+<div class="pricing-card">
+<h3>Homebuyer Confidence Plan</h3>
+<p>Detailed affordability breakdowns, hidden cost analysis, and market insights.</p>
+<a class="cta-btn" href="#">Choose Homebuyer Plan</a>
+</div>
+</div>
+</section>
+<footer>
+<p>Powered by Offerlens AI | 2025</p>
+<p>
+<a href="#">About</a> | <a href="#">Privacy</a> | <a href="#">Terms</a> | <a href="#">Contact</a>
+</p>
+</footer>
+
+<style>
+.cta-btn {
+  background: linear-gradient(145deg, #ffd700, #d4af37);
+  color: #000;
+  padding: 16px 36px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block;
+  font-size: 1.2em;
+  font-family: 'Playfair Display', serif;
+  cursor: pointer;
+  box-shadow: 0px 6px 18px rgba(212,175,55,0.8);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.cta-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0px 12px 28px rgba(255,215,0,1);
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: rgba(28,28,28,0.95);
+  padding: 30px;
+  border-radius: 20px;
+  max-width: 900px;
+  width: 90%;
+  box-shadow: 0px 0px 30px rgba(212,175,55,0.9);
+  position: relative;
+}
+.close-btn {
+  position: absolute;
+  top: 15px; right: 20px;
+  color: #ffd700;
+  font-size: 2em;
+  cursor: pointer;
+  font-weight: bold;
+}
+.modal iframe {
+  width: 100%;
+  height: 700px;
+  border: none;
+  border-radius: 12px;
+  box-shadow: inset 0px 0px 15px rgba(212,175,55,0.4);
+}
+</style>
+<div style="text-align:center; margin:40px 0;">
+<button class="cta-btn" id="openModal">Sign Up Now</button>
+</div>
+<div class="modal" id="formModal">
+<div class="modal-content">
+<span class="close-btn" id="closeModal">×</span>
+<iframe src="https://docs.google.com/forms/d/1ESmHsPHnWhkGQbzf5BetN85kiQHw0mUh-ZCJ0UvZmLw/viewform?embedded=true"></iframe>
+</div>
+</div>
+<script>
+const modal = document.getElementById("formModal");
+const openModal = document.getElementById("openModal");
+const closeModal = document.getElementById("closeModal");
+openModal.onclick = () => modal.style.display = "flex";
+closeModal.onclick = () => modal.style.display = "none";
+window.onclick = (event) => {
+  if (event.target === modal) modal.style.display = "none";
+};
+</script>
+</body>
+</html>
